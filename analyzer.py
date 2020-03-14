@@ -42,7 +42,7 @@ def calc_powerspectrum(data, window, wsize=512):
         # normalization for numpy fft - norm='ortho'
         ps = np.abs(fft(d))**2
         power_spectrum[0:half] += ps[0:half]
-        # maintaine ...
+        # maintain ...
         start += half
         n += 1
     # get decimal value
@@ -59,7 +59,7 @@ def calc_powerspectrum(data, window, wsize=512):
 def cubic_interplote(d, x):
     """
     Finds the degree-three polynomial which best fits these points and
-    returns the value of this polynomilal at given value x.    
+    returns the value of this polynomial at given value x.
     """
     if not len(d) == 4:
         raise ValueError('Insufficient number of data')
