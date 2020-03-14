@@ -7,8 +7,8 @@
 #           @file: Audio_Analyzer.py
 #          @brief: Draw powerspectrum of collect audio info
 #       @internal:
-#        revision: 14
-#   last modified: 2017-04-10 21:57:17
+#        revision: 15
+#   last modified: 2020-03-14 18:30:47
 # *****************************************************
 
 from __future__ import print_function  # (at top of module)
@@ -33,7 +33,7 @@ if IS_PY2:
 else:
     import queue as queue
 
-REV = 13
+REV = 15
 
 AUDIO_RATE = (8000, 11205, 16000, 22050, 32000, 44100, 48000,
               88200, 96000, 176400, 192000, 352800, 384000)
@@ -99,8 +99,7 @@ class Listener(QtCore.QThread):
                                           silence_limit=silence_limit,
                                           prev_audio=prev_audio)
                 if not self.stop_ev.is_set():
-                    data = np.fromstring(bytes.join(b'', audio),
-                                         dtype=np.int16)
+                    data = np.frombuffer(bytes.join(b'', audio), dtype=np.int16)
                     self.queue.put(data)
         except:
             print('Unexpected error: ',
@@ -639,8 +638,9 @@ class AudioAnalyzerForm(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    # enable antialias
-    font = app.font()
+    # enable anti-alias
+    if sys.platform == "win32":
+        font = QtGui.QFont("Segoe UI", 9)
     font.setStyleStrategy(QtGui.QFont.PreferAntialias)
     app.setFont(font)
     form = AudioAnalyzerForm()
